@@ -9,8 +9,8 @@ import java.util.regex.Pattern;
 public class BabelParser {
 
     private static final Map<String, BufferedWriter> files = new HashMap<>();
-    private static final String ts = "20210207135935";
-    private static final String[] syscalls = {"chdir", "chroot", "pivot_root", "setns", "fork", "execve", "exec", "mkdir", "umount", "mount", "connect"};
+    private static final String ts = "20210221152925";
+    private static final String[] syscalls = {"chdir", "chroot", "pivot_root", "setns", "fork", "execve", "exec", "mkdir", "umount", "mount", "connect", "read", "write", "open", "close", "accept", "socket", "bind", "listen"};
 
 
     private static String matches(String syscall) {
@@ -25,7 +25,7 @@ public class BabelParser {
             return files.get(s);
         } else {
             try {
-                BufferedWriter f = new BufferedWriter(new FileWriter("C:\\Users\\scolton\\filtered-" + ts + "-" + s + ".out"));
+                BufferedWriter f = new BufferedWriter(new FileWriter("/home/scolton/lxc-exploit-result/filtered-" + ts + "-" + s + ".out"));
                 files.put(s, f);
                 return f;
             } catch (IOException e) {
@@ -48,7 +48,7 @@ public class BabelParser {
     }
 
     public static void main(String[] args) {
-        String in_file = "C:\\Users\\scolton\\result-" + ts + ".out";
+        String in_file = "/home/scolton/result-" + ts + ".out";
 
         try (BufferedReader in = new BufferedReader(new FileReader(in_file))) {
             Pattern ctx_pat = Pattern.compile("([v]?pid|mnt_ns|net_ns)\\s*=\\s*(\\d+)");
