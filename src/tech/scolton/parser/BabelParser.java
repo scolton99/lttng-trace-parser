@@ -47,7 +47,7 @@ public class BabelParser {
         }
     }
 
-    public static void main(String[] args) {
+    public static void filter() {
         String in_file = "/home/scolton/result-" + ts + ".out";
 
         try (BufferedReader in = new BufferedReader(new FileReader(in_file))) {
@@ -82,6 +82,10 @@ public class BabelParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        Graph.graph();
     }
 
 }
