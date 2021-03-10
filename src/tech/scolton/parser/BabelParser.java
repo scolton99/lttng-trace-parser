@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class BabelParser {
 
     private static final Map<String, BufferedWriter> files = new HashMap<>();
-    private static final String ts = "20210221152925";
+    //private static final String ts = "20210221152925";
     private static final String[] syscalls = {"chdir", "chroot", "pivot_root", "setns", "fork", "execve", "exec", "mkdir", "umount", "mount", "connect", "read", "write", "open", "close", "accept", "socket", "bind", "listen"};
 
 
@@ -25,7 +25,8 @@ public class BabelParser {
             return files.get(s);
         } else {
             try {
-                BufferedWriter f = new BufferedWriter(new FileWriter("/home/scolton/lxc-exploit-result/filtered-" + ts + "-" + s + ".out"));
+                BufferedWriter f = new BufferedWriter(new FileWriter("/Users/nylearora/Documents/Code/CS 450/filtered-" + s + ".out"));
+                System.out.println("success");
                 files.put(s, f);
                 return f;
             } catch (IOException e) {
@@ -48,11 +49,11 @@ public class BabelParser {
     }
 
     public static void main(String[] args) {
-        String in_file = "/home/scolton/result-" + ts + ".out";
+        String in_file = "/Users/nylearora/Documents/Code/CS 450/result.out";
 
         try (BufferedReader in = new BufferedReader(new FileReader(in_file))) {
             Pattern ctx_pat = Pattern.compile("([v]?pid|mnt_ns|net_ns)\\s*=\\s*(\\d+)");
-            Pattern syscall_pat = Pattern.compile("ARECIBO-U\\s(.*):");
+            Pattern syscall_pat = Pattern.compile("localhost.localdomain\\s(.*):");
 
             String ln;
             while ((ln = in.readLine()) != null) {
@@ -69,8 +70,12 @@ public class BabelParser {
 
                 String syscall = attrs.get("syscall");
                 String normalized_call;
+                System.out.println(syscall);
+                if (syscall != null)
+                    System.out.println(matches(syscall));
                 if (syscall != null && ((normalized_call = matches(syscall)) != null)) {
                     BufferedWriter w = getWriter(normalized_call);
+                    System.out.println("howdy");
                     if (w == null)
                         System.out.println("ERROR: couldn't get file handle for " + syscall + "/" + normalized_call);
                     else
